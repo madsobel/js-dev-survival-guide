@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>A Javascript Developers Survival Guide</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: sans-serif;
+      }
+
+      .twitter-tweet {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>A Javascript Developers Survival Guide</h1>
+    <blockquote class="twitter-tweet" data-lang="en">
+      <p lang="en" dir="ltr">
+        For the past several years, I&#39;ve been looking at - and dealing with
+        - people complaining about how dependencies work in JavaScript. The
+        problem is... almost all of these complaints are misguided. So,
+        let&#39;s look at exactly *why* those claims are false.<br /><br />Thread.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193459349446656?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Preface: Dependencies in JS work *very* different from almost any other
+        language. If you haven&#39;t worked with JS very much, you&#39;re
+        probably making assumptions about the tradeoffs that are valid in other
+        ecosystems, but not in JS. This is the source of a lot of these
+        complaints.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193460674830337?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Let&#39;s start with one of the most common ones: &quot;developers have
+        forgotten how to program, they just glue together dependencies
+        now&quot;.<br /><br />This one is built on a fundamental
+        misunderstanding of what programming *is*. Programming isn&#39;t about
+        writing code. It&#39;s about solving problems.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193461702377472?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Your job as a programmer is to 1) most efficiently 2) build a solution
+        to a problem 3) that works optimally well. One of the best things you
+        can do towards that goal, is to *use dependencies*. It means you use
+        well-tested implementations that save you time and bugs.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193462868467712?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        There is absolutely zero value to reinventing perfectly round wheels,
+        from a professional perspective. The only &#39;value&#39; is in
+        masturbating over how much code one has written, which incidentally is
+        something I mostly see not-very-competent developers do.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193463916961792?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Deriving from that: &quot;People add dependencies for things that are
+        like 3 lines to write yourself!&quot;<br /><br />Sindre Sorhus has
+        written a far better rebuttal of this particular claim than I could,
+        really: <a href="https://t.co/UMOsexB1cz">https://t.co/UMOsexB1cz</a
+        ><br /><br />TL;DR: LOC are irrelevant. Complexity matters.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193464965550080?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Next: &quot;People pull in 600 megabytes of code just for a simple
+        project!&quot;<br /><br />This one is just factually wrong. People look
+        at node_modules, conclude &quot;oh that&#39;s 600MB, it must be 600MB of
+        code&quot;. But if you actually *look at the contents*, you will find
+        the vast majority [...]
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193466198667270?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        [...] of that 600MB is documentation, tests, screenshots, and other
+        things that are never actually going to be part of your application.
+        There are even experimental tools for removing those files.<br /><br />And
+        there&#39;s a second problem here: node_modules is clearly visible.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193467423395840?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        What I mean by that, is that unlike most languages - where you have a
+        single system-wide dependency folder that is mostly hidden from users
+        and developers - node_modules is always in your line of sight. That
+        makes people estimate it to be bigger, just because it is more visible.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193468572680193?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And let&#39;s be realistic, when was the last time you compared your
+        system-wide dependency folders for other languages to the actual
+        dependency code in node_modules? You&#39;ve probably never done that. So
+        on what basis are you concluding JS to be &#39;worse&#39; here?
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193469671555073?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But in JS, every project has its *own* pile of dependencies! And
+        they can be many levels deep!&quot;<br /><br />Absolutely correct. But
+        this isn&#39;t a design failure; it&#39;s a tradeoff. It&#39;s the
+        reason that &#39;dependency conflicts&#39; are not really a thing in JS.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193470812393473?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        It&#39;s the reason that you can trivially monkeypatch modules for
+        debugging reasons, and the reason that you can be certain that if you
+        run `npm install` on a project, *it will install correctly and
+        successfully the first time*.<br /><br />The cost of that is a small
+        amount of disk space.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193471919697920?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And yes, I say a &#39;small amount&#39;, because even if you have to
+        deal with 500MB of dependency data of some sort, is that really *that*
+        much? Storage has gotten incredibly cheap over the years, and you only
+        really need the full set of data when you&#39;re *developing* on
+        something.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193473085710336?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And if you&#39;re still not convinced, just do the maths: at your usual
+        hourly rate/salary, what is cheaper - 500MB of storage space, or
+        spending hours tracking down dependency conflicts just to try something
+        out or fix a bug?
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193474142715904?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But all those dependencies make it super slow to install!&quot;<br /><br />It
+        doesn&#39;t. The slow thing here is the npm client, which is notoriously
+        unperformant. If you use a client like pnpm instead, you&#39;ll find
+        that installs are actually rather fast. Even on a HDD.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193475182927872?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But node_modules is still bigger than dependency sets in other
+        languages!&quot;<br /><br />This is often true. The reason, however, is
+        an important one: due to modules in JS typically having a single
+        responsibility, they are usually *fully documented and tested*, unlike
+        monolithic frameworks.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193476206354433?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        This means that you will necessarily end up with more documentation and
+        test data, simply because the workload of dependency maintenance is
+        better shared amongst many people due to the granularity of
+        dependencies! That is a benefit, not a problem.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193477426880512?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But that means that you have to trust way more people not to
+        publish malicious dependencies!&quot;<br /><br />This is one of the
+        trickier ones, because *on the face of it* it seems like a sound
+        argument. However, &#39;dependency constellations&#39; are a common
+        thing in JS.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193478630576128?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        A dependency constellation is basically just a set of related
+        dependencies that are written and published by a single author.
+        They&#39;re still independently versioned and usable, but you only trust
+        one party when using any amount of them.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193479637225472?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        This, combined with the fact that monolithic frameworks often require
+        more manhours for maintenance than their equivalent modular dependency
+        sets, and therefore often have more maintainers, means that you actually
+        end up trusting about the *same* amount of people.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193480698368000?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        (Feel free to actually run the numbers if you don&#39;t believe me, and
+        analyze the amount of contributors involved in your dependency tree.
+        Newer versions of npm will even outright tell you the amount of trusted
+        contributors when you install stuff.)
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193481730252800?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        This explains more about the difference between modular and monolithic
+        dependencies, by the way:
+        <a href="https://t.co/LytiUJajka">https://t.co/LytiUJajka</a>
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193482845913090?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Back to one of the more common claims, although this one is usually
+        unspoken: the belief that &quot;adding a dependency has an inherent
+        cost&quot;. People rarely express this belief explicitly, but it
+        underlies a lot of the vague &quot;so many dependencies!&quot;
+        complaints.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193484007718912?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        You can probably guess what my response is going to be: no, they
+        don&#39;t. Dependencies, in and of themselves, are zero-cost.<br /><br />The
+        cost of a dependency is in different metrics: amount of newly trusted
+        parties, amount of code complexity, maintenance cost, risk of dependency
+        conflict.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193485156929537?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        I&#39;ve already addressed the dependency conflict cost; that one
+        doesn&#39;t really exist in JS (plugin architectures exempted), even
+        though it does in many other ecosystems.<br /><br />But... what about
+        the rest? Surely adding more dependencies means more code complexity?
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065193486285180928?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Well... no, quite the contrary. The main problem with monolithic
+        batteries-included dependencies, is that you end up pulling in a lot of
+        complexity that your application *doesn&#39;t need*, but that is
+        nevertheless there for other projects that *do* need it, to use.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065194065577287681?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        But you still need to audit that code, you need to maintain it if other
+        things rely on it, and so on. Effectively, there is a non-zero amount of
+        &#39;cruft&#39; in monolithic dependencies that you pay for even though
+        you don&#39;t use it.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065194066680446976?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Compare this to modular dependencies, where every dependency has a
+        single well-defined responsibility, and does not contain logic for
+        *anything* else. In that model, the &#39;cruft&#39; is virtually zero -
+        you only pay for what you use, it&#39;s just spread out over many more
+        packages.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065194068186152960?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        In the end, the *accumulated* complexity of all those smaller
+        purpose-built dependencies is actually less than that of a single
+        monolithic dependency with a lot of irrelevant stuff! Essentially,
+        dependency granularity lowers the complexity.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195499832164352?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And the result of this is that a *lot* of costs go down: there&#39;s
+        less code to audit, less code to maintain. If a dependency goes
+        unmaintained, it probably already was feature-complete so it doesn&#39;t
+        really matter.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195500922646528?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And even if it&#39;s *not* feature-complete, you can fork it and
+        maintain it - not a big deal, because it only does a single thing, so
+        the maintenance cost is almost zero. A similar rationale applies to
+        almost *every* cost metric relating to dependencies. More granular is
+        better.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195501954506752?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But I regularly see people having trouble with dependencies in
+        JS!&quot;<br /><br />First of all, have a look at *which* dependencies
+        they have trouble with. Almost without exception, it&#39;s the
+        monolithic dependencies; that not only have all of the extra costs I
+        described, but also don&#39;t [...]
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195503112126464?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        [...] integrate cleanly with the rest of the (modular) ecosystem. Any JS
+        project is likely using hundreds if not thousands of small
+        single-responsibility modules that nobody has ever had issues with,
+        because they just work. And so you don&#39;t notice them.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195504190087168?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And fundamentally, this is the problem with how people who don&#39;t
+        have much JS experience view dependency management in JS - they view it
+        through the lens of *other* dependency management systems, that have a
+        distinctly different (namely: monolithic) model.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195505246978048?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And because people only see the problematic cases, and those problematic
+        cases don&#39;t look weird to them (they&#39;re used to monolithic
+        systems, and the problem cases are monolithic dependencies), they assume
+        that it must be representative of the whole JS ecosystem.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195506308132864?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        When, in reality, the problem lies with the dependencies that *deviate
+        from* the JS ecosystem and try to mimick the model that other languages
+        use - the same languages that said complaining developers are holding up
+        as a gold standard!
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195507792994304?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        I&#39;ve probably missed a number of points in this thread, but I&#39;ve
+        kind of run out of steam for now. This is a pretty exhausting topic,
+        that I&#39;ve spent hours upon hours trying to explain to people over
+        the past few years.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195971137675264?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        If you feel that there&#39;s an argument against the dependency model in
+        JS that hasn&#39;t been covered in this thread, feel free to reply with
+        it, and I&#39;ll address it as soon as I&#39;m able to.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195972207222785?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And finally: please stop with the &quot;lol node_modules&quot; memes.
+        They stopped being funny years ago, and they&#39;re definitely not funny
+        to people like me, who have to deal with the support load of people
+        taking them seriously.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065195973364862984?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Oh, one more note: the dependency system in JS is really just the Single
+        Responsibility Principle - which is widely considered to be good
+        engineering practice - applied to a dependency system. This really
+        should not be the controversial topic that it is.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065196711012900869?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Okay, so let&#39;s add one more point, courtesy of somebody on IRC:
+        &quot;I can write it faster than learning how to use a library!&quot;<br /><br />Yes,
+        you probably can. What you&#39;re overlooking is the amount of errors
+        you might have made and how much time it will take to find and fix them,
+        [...]
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065199182292627456?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        [...] not to mention that you&#39;re not benefiting from the collective
+        experience of the rest of the ecosystem.<br /><br />This ties into the
+        very first point: programming isn&#39;t about &quot;writing code&quot;.
+        Humans routinely make mistakes and underestimate the difficulty of
+        implementing [...]
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065199183408373760?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        [...] a thing correctly. Using a dependency - even for tasks that you
+        think you can just do yourself off-the-cuff - means that you will
+        benefit from everybody&#39;s collective experience, and get future bug
+        fixes for free, with zero effort.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065199184465276929?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        And let&#39;s do another one. &quot;Why can&#39;t JS just have the
+        obvious stuff in the standard library?&quot;<br /><br />This is built on
+        the assumption that having things in the &#39;standard library&#39; is a
+        desirable thing. The only problem is, that entire assumption is wrong.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200622050439169?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        A &#39;standard library&#39; is effectively just &quot;a library that
+        you cannot independently version, fork, or ensure the availability
+        of&quot;. It&#39;s inherently tied to the runtime, making it more
+        difficult to write code that works in all runtimes.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200623203823616?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Its non-replaceable presence in &#39;core&#39; also means that API
+        changes are heavily frowned upon, which is why standard libraries are
+        routinely stuck with unergonomic implementations of things, with
+        developers only learning months later that they should be using a
+        wrapper library.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200624290201601?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        Having something in a standard library is worse *in every possible way*,
+        compared to having it in an independent library. It&#39;s not desirable
+        in the slightest. Bulky standard libraries are a workaround for
+        inadequate dependency management tools, not a &#39;best practice&#39;.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200625338716161?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But at least you know that the source is trustworthy!&quot;<br /><br />There&#39;s
+        no reason you cannot have that assurance with externally-managed
+        libraries. It&#39;s totally possible for the core development team to
+        separately manage libraries for common functionality, under a
+        &#39;sanctioned&#39; name.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200626496430081?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        The only fundamental difference between &quot;in standard library&quot;
+        and &quot;in and external library&quot; is whether it&#39;s versioned
+        alongside the runtime, or versioned on a per-project basis. The exact
+        maintenance and design policy is separate from that.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065200627687534592?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        &quot;But what about leftpad?&quot;<br /><br />The leftpad incident is
+        one of the most grossly misunderstood incidents in the history of JS. It
+        had absolutely nothing to do whatsoever with &#39;small
+        dependencies&#39;, or even with the concept of &#39;external
+        libraries&#39; in general.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065201200432328704?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <blockquote class="twitter-tweet" data-conversation="none" data-lang="en">
+      <p lang="en" dir="ltr">
+        The leftpad incident occurred for one simple reason: the npm registry
+        allowed deletion of packages, something that no other package registry
+        allows, and for very good reason. This has been mostly rectified in
+        npm&#39;s policy, and is no longer a real issue.
+      </p>
+      &mdash; Sven Slootweg (@joepie91)
+      <a
+        href="https://twitter.com/joepie91/status/1065201201527037952?ref_src=twsrc%5Etfw"
+        >November 21, 2018</a
+      >
+    </blockquote>
+    <script
+      async
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"
+    ></script>
+  </body>
+</html>
